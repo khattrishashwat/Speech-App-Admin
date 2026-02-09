@@ -1,18 +1,10 @@
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { AdminLayout } from "@/components/AdminLayout";
-import DashboardPage from "@/pages/DashboardPage";
 
-const Index = () => {
+export function ProtectedPage({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
-
   if (!isAuthenticated) return <Navigate to="/login" replace />;
-
-  return (
-    <AdminLayout>
-      <DashboardPage />
-    </AdminLayout>
-  );
-};
-
-export default Index;
+  return <AdminLayout>{children}</AdminLayout>;
+}
