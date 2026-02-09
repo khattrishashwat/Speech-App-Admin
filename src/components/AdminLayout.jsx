@@ -52,8 +52,8 @@ export function AdminLayout({ children }) {
       >
         {/* Logo */}
         <div className="h-16 flex items-center gap-3 px-4 border-b border-border shrink-0">
-          <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shrink-0">
-            <BookOpenCheck className="h-5 w-5 text-primary-foreground" />
+          <div className="h-12 w-12 flex items-center justify-center">
+            <img src="/image.png" alt="icon" />
           </div>
           {sidebarOpen && (
             <span className="font-bold text-lg text-foreground whitespace-nowrap">

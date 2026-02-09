@@ -139,30 +139,7 @@ export default function SettingsPage() {
         </Button>
       </div>
 
-      {/* System */}
-      <div className="bg-card rounded-2xl shadow-card border border-border p-6 space-y-4">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="h-10 w-10 rounded-xl bg-mint flex items-center justify-center">
-            <Sliders className="h-5 w-5 text-mint-foreground" />
-          </div>
-          <h3 className="font-bold text-foreground">System Configuration</h3>
-        </div>
-        <p className="text-sm text-muted-foreground">These settings are read-only and managed by the system.</p>
-        <div className="space-y-3">
-          {[
-            { label: "Max Session Duration", value: "10 minutes" },
-            { label: "OTP Expiry", value: "5 minutes" },
-            { label: "Supported Age Range", value: "6 months – 3 years" },
-            { label: "App Version", value: "2.1.0" },
-            { label: "Last Updated", value: "Feb 9, 2026" },
-          ].map((config, i) => (
-            <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-              <span className="text-sm text-foreground font-medium">{config.label}</span>
-              <span className="text-sm text-muted-foreground">{config.value}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+     
     </div>
   );
 }
