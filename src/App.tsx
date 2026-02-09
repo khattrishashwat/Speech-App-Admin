@@ -12,9 +12,12 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import OtpVerificationPage from "./pages/OtpVerificationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import EpisodesPage from "./pages/EpisodesPage";
+import EpisodeDetailPage from "./pages/EpisodeDetailPage";
 import VocabularyPage from "./pages/VocabularyPage";
 import ChildrenPage from "./pages/ChildrenPage";
+import ChildProfilePage from "./pages/ChildProfilePage";
 import SessionsPage from "./pages/SessionsPage";
+import SessionDetailPage from "./pages/SessionDetailPage";
 import ErrorAnalysisPage from "./pages/ErrorAnalysisPage";
 import ReportsPage from "./pages/ReportsPage";
 import ContentPage from "./pages/ContentPage";
@@ -38,9 +41,12 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/" element={<Index />} />
               <Route path="/episodes" element={<ProtectedPage><EpisodesPage /></ProtectedPage>} />
+              <Route path="/episodes/:id" element={<ProtectedPage><EpisodeDetailPage /></ProtectedPage>} />
               <Route path="/vocabulary" element={<ProtectedPage><VocabularyPage /></ProtectedPage>} />
               <Route path="/children" element={<ProtectedPage><ChildrenPage /></ProtectedPage>} />
+              <Route path="/children/:id" element={<ProtectedPage><ChildProfilePage /></ProtectedPage>} />
               <Route path="/sessions" element={<ProtectedPage><SessionsPage /></ProtectedPage>} />
+              <Route path="/sessions/:id" element={<ProtectedPage><SessionDetailPage /></ProtectedPage>} />
               <Route path="/error-analysis" element={<ProtectedPage><ErrorAnalysisPage /></ProtectedPage>} />
               <Route path="/reports" element={<ProtectedPage><ReportsPage /></ProtectedPage>} />
               <Route path="/content" element={<ProtectedPage><ContentPage /></ProtectedPage>} />

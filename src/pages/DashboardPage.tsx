@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useI18n } from "@/contexts/I18nContext";
 import { Users, Clock, BookOpen, AudioWaveform, Timer } from "lucide-react";
 import {
@@ -29,19 +30,19 @@ const ageGroupData = [
 ];
 
 const episodeUsageData = [
-  { name: "Morning Routine", sessions: 342 },
-  { name: "Animal Friends", sessions: 289 },
-  { name: "Color World", sessions: 256 },
-  { name: "Food Fun", sessions: 198 },
-  { name: "Bath Time", sessions: 176 },
+  { id: 1, name: "Morning Routine", sessions: 342 },
+  { id: 2, name: "Animal Friends", sessions: 289 },
+  { id: 3, name: "Color World", sessions: 256 },
+  { id: 4, name: "Food Fun", sessions: 198 },
+  { id: 5, name: "Bath Time", sessions: 176 },
 ];
 
 const recentSessions = [
-  { child: "Amaury T.", episode: "Morning Routine", duration: "5m 12s", pattern: "Fronting" },
-  { child: "Léa M.", episode: "Animal Friends", duration: "3m 45s", pattern: "Deletion" },
-  { child: "Noah B.", episode: "Color World", duration: "4m 08s", pattern: "Gliding" },
-  { child: "Chloé R.", episode: "Food Fun", duration: "6m 21s", pattern: "Stopping" },
-  { child: "Lucas D.", episode: "Bath Time", duration: "4m 55s", pattern: "Fronting" },
+  { id: 1, child: "Amaury T.", episode: "Morning Routine", duration: "5m 12s", pattern: "Fronting" },
+  { id: 2, child: "Léa M.", episode: "Animal Friends", duration: "3m 45s", pattern: "Deletion" },
+  { id: 3, child: "Noah B.", episode: "Color World", duration: "4m 08s", pattern: "Gliding" },
+  { id: 4, child: "Chloé R.", episode: "Food Fun", duration: "6m 21s", pattern: "Stopping" },
+  { id: 5, child: "Lucas D.", episode: "Bath Time", duration: "4m 55s", pattern: "Fronting" },
 ];
 
 const insights = [
@@ -53,13 +54,23 @@ const insights = [
 
 export default function DashboardPage() {
   const { t } = useI18n();
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {summaryCards.map((card) => (
-          <div key={card.key} className="bg-card rounded-2xl shadow-card p-5 border border-border flex items-start gap-4">
+          <div 
+            key={card.key} 
+            className="bg-card rounded-2xl shadow-card p-5 border border-border flex items-start gap-4 hover:shadow-elevated transition-shadow cursor-pointer"
+            onClick={() => {
+              if (card.key === "totalChildren") navigate("/children");
+              else if (card.key === "totalSessions") navigate("/sessions");
+              else if (card.key === "activeEpisodes") navigate("/episodes");
+              else if (card.key === "commonPattern") navigate("/error-analysis");
+            }}
+          >
             <div className={`h-11 w-11 rounded-xl ${card.color} flex items-center justify-center shrink-0`}>
               <card.icon className="h-5 w-5" />
             </div>
@@ -115,7 +126,13 @@ export default function DashboardPage() {
               <XAxis type="number" tick={{ fontSize: 11 }} />
               <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 10 }} />
               <Tooltip />
-              <Bar dataKey="sessions" fill="hsl(210,60%,55%)" radius={[0, 4, 4, 0]} />
+              <Bar 
+                dataKey="sessions" 
+                fill="hsl(210,60%,55%)" 
+                radius={[0, 4, 4, 0]}
+                onClick={(data) => navigate(`/episodes/${data.id}`)}
+                className="cursor-pointer"
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -125,8 +142,14 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Recent Sessions */}
         <div className="lg:col-span-2 bg-card rounded-2xl shadow-card border border-border overflow-hidden">
-          <div className="px-5 py-4 border-b border-border">
+          <div className="px-5 py-4 border-b border-border flex items-center justify-between">
             <h3 className="text-sm font-bold text-foreground">{t("recentSessions")}</h3>
+            <button 
+              onClick={() => navigate("/sessions")}
+              className="text-xs font-medium text-primary hover:underline"
+            >
+              View All
+            </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -140,8 +163,12 @@ export default function DashboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {recentSessions.map((s, i) => (
-                  <tr key={i} className="border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
+                {recentSessions.map((s) => (
+                  <tr 
+                    key={s.id} 
+                    className="border-b border-border last:border-0 hover:bg-muted/50 transition-colors cursor-pointer"
+                    onClick={() => navigate(`/sessions/${s.id}`)}
+                  >
                     <td className="px-5 py-3 font-medium text-foreground">{s.child}</td>
                     <td className="px-5 py-3 text-muted-foreground">{s.episode}</td>
                     <td className="px-5 py-3 text-muted-foreground">{s.duration}</td>
@@ -151,7 +178,10 @@ export default function DashboardPage() {
                       </span>
                     </td>
                     <td className="px-5 py-3">
-                      <button className="text-xs font-medium text-primary hover:underline">
+                      <button 
+                        className="text-xs font-medium text-primary hover:underline"
+                        onClick={(e) => { e.stopPropagation(); navigate(`/sessions/${s.id}`); }}
+                      >
                         {t("view")}
                       </button>
                     </td>
