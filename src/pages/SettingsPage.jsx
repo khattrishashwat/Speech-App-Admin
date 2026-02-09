@@ -30,7 +30,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6">
       {/* Profile */}
       <div className="bg-card rounded-2xl shadow-card border border-border p-6 space-y-4">
         <div className="flex items-center gap-3 mb-2">
@@ -76,8 +76,7 @@ export default function SettingsPage() {
           <Save className="h-4 w-4" /> {t("save")}
         </Button>
       </div>
-
-      {/* Language */}
+{/* <div className="space-y-6">
       <div className="bg-card rounded-2xl shadow-card border border-border p-6 space-y-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="h-10 w-10 rounded-xl bg-lavender flex items-center justify-center">
@@ -94,7 +93,6 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Notifications */}
       <div className="bg-card rounded-2xl shadow-card border border-border p-6 space-y-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="h-10 w-10 rounded-xl bg-sky flex items-center justify-center">
@@ -138,6 +136,109 @@ export default function SettingsPage() {
           <Save className="h-4 w-4" /> Save Preferences
         </Button>
       </div>
+</div> */}
+      
+<div className="grid grid-cols-12 gap-6">
+
+  {/* Language */}
+  <div className="col-span-12 md:col-span-6 bg-card rounded-2xl shadow-card border border-border p-6 space-y-4">
+    <div className="flex items-center gap-3 mb-2">
+      <div className="h-10 w-10 rounded-xl bg-lavender flex items-center justify-center">
+        <Globe className="h-5 w-5 text-lavender-foreground" />
+      </div>
+      <h3 className="font-bold text-foreground">
+        {t("language")} Preferences
+      </h3>
+    </div>
+
+    <div className="flex items-center justify-between py-2">
+      <div>
+        <p className="text-sm font-medium text-foreground">
+          Interface Language
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Select your preferred language for the admin panel
+        </p>
+      </div>
+      <LanguageSelector />
+    </div>
+  </div>
+
+  {/* Notifications */}
+  <div className="col-span-12 md:col-span-6 bg-card rounded-2xl shadow-card border border-border p-6 space-y-4">
+    <div className="flex items-center gap-3 mb-2">
+      <div className="h-10 w-10 rounded-xl bg-sky flex items-center justify-center">
+        <Sliders className="h-5 w-5 text-sky-foreground" />
+      </div>
+      <h3 className="font-bold text-foreground">
+        Notification Preferences
+      </h3>
+    </div>
+
+    <div className="space-y-4">
+      <div className="flex items-center justify-between py-2">
+        <div>
+          <p className="text-sm font-medium text-foreground">
+            Email Alerts
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Receive important system notifications via email
+          </p>
+        </div>
+        <Switch
+          checked={notifications.emailAlerts}
+          onCheckedChange={(checked) =>
+            setNotifications({ ...notifications, emailAlerts: checked })
+          }
+        />
+      </div>
+
+      <div className="flex items-center justify-between py-2 border-t border-border">
+        <div>
+          <p className="text-sm font-medium text-foreground">
+            Weekly Reports
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Get weekly summary reports of activity
+          </p>
+        </div>
+        <Switch
+          checked={notifications.weeklyReports}
+          onCheckedChange={(checked) =>
+            setNotifications({ ...notifications, weeklyReports: checked })
+          }
+        />
+      </div>
+
+      <div className="flex items-center justify-between py-2 border-t border-border">
+        <div>
+          <p className="text-sm font-medium text-foreground">
+            New Child Alerts
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Get notified when new children join
+          </p>
+        </div>
+        <Switch
+          checked={notifications.newChildAlerts}
+          onCheckedChange={(checked) =>
+            setNotifications({ ...notifications, newChildAlerts: checked })
+          }
+        />
+      </div>
+    </div>
+
+    <Button
+      size="sm"
+      onClick={handleSaveNotifications}
+      className="gap-1.5"
+    >
+      <Save className="h-4 w-4" />
+      Save Preferences
+    </Button>
+  </div>
+
+</div>
 
      
     </div>
