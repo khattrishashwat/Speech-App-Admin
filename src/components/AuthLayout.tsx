@@ -19,11 +19,19 @@ export function AuthLayout({ children }: { children: ReactNode }) {
 
       <div className="w-full max-w-md z-10 animate-fade-in">
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">
+          {/* <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">
             <BookOpen className="h-6 w-6 text-primary-foreground" />
-          </div>
+          </div> */}
+          <div className="h-12 w-12 flex items-center justify-center">
+  <img
+    src="/image.png"
+    alt="icon"
+    // className=" object-contain"
+  />
+</div>
+
           <div>
-            <h1 className="text-2xl font-bold text-foreground">SpeechBuddy</h1>
+            <h1 className="text-2xl font-bold text-foreground">Speech App</h1>
             <p className="text-xs text-muted-foreground font-medium">Admin Panel</p>
           </div>
         </div>

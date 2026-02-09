@@ -24,8 +24,8 @@ const initialContentPages: ContentItem[] = [
     label: "Terms & Conditions", 
     updated: "Feb 5, 2026",
     content: {
-      en: "# Terms & Conditions\n\nWelcome to SpeechBuddy. By using our service, you agree to these terms.\n\n## 1. Acceptance of Terms\n\nBy accessing or using SpeechBuddy, you agree to be bound by these Terms & Conditions.\n\n## 2. Description of Service\n\nSpeechBuddy provides speech and language learning content for children aged 6 months to 3 years.\n\n## 3. Privacy\n\nYour privacy is important to us. Please review our Privacy Policy for details on how we collect and use your information.",
-      fr: "# Conditions d'utilisation\n\nBienvenue sur SpeechBuddy. En utilisant notre service, vous acceptez ces conditions.\n\n## 1. Acceptation des conditions\n\nEn accédant ou en utilisant SpeechBuddy, vous acceptez d'être lié par ces conditions.\n\n## 2. Description du service\n\nSpeechBuddy fournit du contenu d'apprentissage de la parole et du langage pour les enfants de 6 mois à 3 ans."
+      en: "# Terms & Conditions\n\nWelcome to Speech App. By using our service, you agree to these terms.\n\n## 1. Acceptance of Terms\n\nBy accessing or using Speech App, you agree to be bound by these Terms & Conditions.\n\n## 2. Description of Service\n\nSpeech App provides speech and language learning content for children aged 6 months to 3 years.\n\n## 3. Privacy\n\nYour privacy is important to us. Please review our Privacy Policy for details on how we collect and use your information.",
+      fr: "# Conditions d'utilisation\n\nBienvenue sur Speech App. En utilisant notre service, vous acceptez ces conditions.\n\n## 1. Acceptation des conditions\n\nEn accédant ou en utilisant Speech App, vous acceptez d'être lié par ces conditions.\n\n## 2. Description du service\n\nSpeech App fournit du contenu d'apprentissage de la parole et du langage pour les enfants de 6 mois à 3 ans."
     },
     isDraft: false
   },
@@ -34,8 +34,8 @@ const initialContentPages: ContentItem[] = [
     label: "Privacy Policy", 
     updated: "Jan 28, 2026",
     content: {
-      en: "# Privacy Policy\n\nThis Privacy Policy describes how SpeechBuddy collects, uses, and protects your information.\n\n## Information We Collect\n\n- Account information (email, name)\n- Child profile information (name, age)\n- Usage data and session recordings\n\n## How We Use Your Information\n\nWe use your information to:\n- Provide personalized learning experiences\n- Improve our services\n- Communicate with you about your account",
-      fr: "# Politique de confidentialité\n\nCette politique de confidentialité décrit comment SpeechBuddy collecte, utilise et protège vos informations.\n\n## Informations que nous collectons\n\n- Informations de compte (email, nom)\n- Informations du profil enfant (nom, âge)\n- Données d'utilisation et enregistrements de session"
+      en: "# Privacy Policy\n\nThis Privacy Policy describes how Speech App collects, uses, and protects your information.\n\n## Information We Collect\n\n- Account information (email, name)\n- Child profile information (name, age)\n- Usage data and session recordings\n\n## How We Use Your Information\n\nWe use your information to:\n- Provide personalized learning experiences\n- Improve our services\n- Communicate with you about your account",
+      fr: "# Politique de confidentialité\n\nCette politique de confidentialité décrit comment Speech App collecte, utilise et protège vos informations.\n\n## Informations que nous collectons\n\n- Informations de compte (email, nom)\n- Informations du profil enfant (nom, âge)\n- Données d'utilisation et enregistrements de session"
     },
     isDraft: false
   },
@@ -54,8 +54,8 @@ const initialContentPages: ContentItem[] = [
     label: "FAQ", 
     updated: "Jan 15, 2026",
     content: {
-      en: "# Frequently Asked Questions\n\n## What age is SpeechBuddy for?\n\nSpeechBuddy is designed for children aged 6 months to 3 years.\n\n## How does speech pattern detection work?\n\nOur system listens to your child's speech and identifies common developmental patterns, helping you understand their language development.\n\n## Is my child's data secure?\n\nYes! We use industry-standard encryption and never share your data with third parties.",
-      fr: "# Questions fréquemment posées\n\n## Pour quel âge est SpeechBuddy?\n\nSpeechBuddy est conçu pour les enfants de 6 mois à 3 ans."
+      en: "# Frequently Asked Questions\n\n## What age is Speech App for?\n\nSpeech App is designed for children aged 6 months to 3 years.\n\n## How does speech pattern detection work?\n\nOur system listens to your child's speech and identifies common developmental patterns, helping you understand their language development.\n\n## Is my child's data secure?\n\nYes! We use industry-standard encryption and never share your data with third parties.",
+      fr: "# Questions fréquemment posées\n\n## Pour quel âge est Speech App?\n\nSpeech App est conçu pour les enfants de 6 mois à 3 ans."
     },
     isDraft: false
   },

@@ -12,7 +12,7 @@ export default function SettingsPage() {
   const { t } = useI18n();
   const [profile, setProfile] = useState({
     name: "Admin User",
-    email: "admin@speechbuddy.app",
+    email: "admin@speechapp.app",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [notifications, setNotifications] = useState({

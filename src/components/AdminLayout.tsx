@@ -44,7 +44,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <BookOpenCheck className="h-5 w-5 text-primary-foreground" />
           </div>
           {sidebarOpen && (
-            <span className="font-bold text-lg text-foreground whitespace-nowrap">SpeechBuddy</span>
+            <span className="font-bold text-lg text-foreground whitespace-nowrap">Speech App</span>
           )}
         </div>
 
