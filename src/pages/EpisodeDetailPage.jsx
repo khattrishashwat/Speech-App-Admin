@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useI18n } from "@/contexts/I18nContext";
-import { ArrowLeft, Save, Play, Pause, Plus, GripVertical, Trash2, Edit2, X, Check } from "lucide-react";
+import { 
+  ArrowLeft, Save, Play, Pause, Plus, GripVertical, Trash2, Edit2, 
+  X, Check, HelpCircle, Image, Volume2, ListOrdered, Eye, EyeOff
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const episodesData = {
@@ -35,6 +41,42 @@ const episodesData = {
       { id: 3, name: "Point to pictures", enabled: true },
       { id: 4, name: "Sing along", enabled: false },
     ],
+    quiz: {
+      enabled: true,
+      passThreshold: 70,
+      questions: [
+        {
+          id: 1,
+          question: "What does 'Bonjou' mean?",
+          type: "multiple-choice",
+          options: ["Good morning", "Good night", "Thank you", "Please"],
+          correctAnswer: 0,
+          image: null,
+          audio: null,
+          points: 10
+        },
+        {
+          id: 2,
+          question: "Point to the sun in the picture",
+          type: "image-selection",
+          options: ["sun", "moon", "star", "cloud"],
+          correctAnswer: 0,
+          image: "sun.jpg",
+          audio: null,
+          points: 15
+        },
+        {
+          id: 3,
+          question: "Listen and repeat: 'Good morning'",
+          type: "audio-response",
+          options: [],
+          correctAnswer: null,
+          image: null,
+          audio: "good_morning.mp3",
+          points: 20
+        }
+      ]
+    }
   },
   "2": {
     name: "Animal Friends",
@@ -55,7 +97,33 @@ const episodesData = {
       { id: 1, name: "Match animal sounds", enabled: true },
       { id: 2, name: "Name the animals", enabled: true },
     ],
-  },
+    quiz: {
+      enabled: true,
+      passThreshold: 70,
+      questions: [
+        {
+          id: 1,
+          question: "What sound does a cat make?",
+          type: "multiple-choice",
+          options: ["Meow", "Woof", "Moo", "Oink"],
+          correctAnswer: 0,
+          image: null,
+          audio: null,
+          points: 10
+        },
+        {
+          id: 2,
+          question: "Find the dog",
+          type: "image-selection",
+          options: ["dog", "cat", "bird", "fish"],
+          correctAnswer: 0,
+          image: "animals.jpg",
+          audio: null,
+          points: 15
+        }
+      ]
+    }
+  }
 };
 
 export default function EpisodeDetailPage() {
@@ -75,10 +143,22 @@ export default function EpisodeDetailPage() {
   const [storyEnglish, setStoryEnglish] = useState(initialData.storyEnglish);
   const [targets, setTargets] = useState(initialData.targets);
   const [tasks, setTasks] = useState(initialData.tasks);
+  const [quiz, setQuiz] = useState(initialData.quiz);
   const [showAddTarget, setShowAddTarget] = useState(false);
   const [newTarget, setNewTarget] = useState({ word: "", language: "English", category: "" });
   const [editingTarget, setEditingTarget] = useState(null);
   const [draggedTask, setDraggedTask] = useState(null);
+  const [showAddQuestion, setShowAddQuestion] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState(null);
+  const [newQuestion, setNewQuestion] = useState({
+    question: "",
+    type: "multiple-choice",
+    options: ["", "", "", ""],
+    correctAnswer: 0,
+    image: "",
+    audio: "",
+    points: 10
+  });
 
   const handleSaveStory = () => {
     toast.success("Story saved successfully!");
@@ -136,6 +216,117 @@ export default function EpisodeDetailPage() {
     toast.success("Task order saved!");
   };
 
+  const toggleQuizEnabled = () => {
+    setQuiz({ ...quiz, enabled: !quiz.enabled });
+    toast.success(quiz.enabled ? "Quiz disabled" : "Quiz enabled");
+  };
+
+  const updatePassThreshold = (value) => {
+    const threshold = parseInt(value) || 70;
+    setQuiz({ ...quiz, passThreshold: threshold });
+    toast.success(`Pass threshold set to ${threshold}%`);
+  };
+
+  const addQuestion = () => {
+    if (!newQuestion.question.trim()) {
+      toast.error("Please enter a question");
+      return;
+    }
+    
+    if (newQuestion.type === "multiple-choice" && newQuestion.options.some(opt => !opt.trim())) {
+      toast.error("Please fill all options for multiple choice");
+      return;
+    }
+    
+    const newId = Math.max(...quiz.questions.map(q => q.id)) + 1;
+    const questionToAdd = {
+      ...newQuestion,
+      id: newId
+    };
+    
+    setQuiz({
+      ...quiz,
+      questions: [...quiz.questions, questionToAdd]
+    });
+    
+    setNewQuestion({
+      question: "",
+      type: "multiple-choice",
+      options: ["", "", "", ""],
+      correctAnswer: 0,
+      image: "",
+      audio: "",
+      points: 10
+    });
+    
+    setShowAddQuestion(false);
+    toast.success("Question added!");
+  };
+
+  const deleteQuestion = (id) => {
+    setQuiz({
+      ...quiz,
+      questions: quiz.questions.filter(q => q.id !== id)
+    });
+    toast.success("Question removed");
+  };
+
+  const editQuestion = (question) => {
+    setEditingQuestion(question);
+    setNewQuestion({ ...question });
+    setShowAddQuestion(true);
+  };
+
+  const updateQuestion = () => {
+    if (!newQuestion.question.trim()) {
+      toast.error("Please enter a question");
+      return;
+    }
+    
+    setQuiz({
+      ...quiz,
+      questions: quiz.questions.map(q => 
+        q.id === editingQuestion.id ? { ...newQuestion, id: q.id } : q
+      )
+    });
+    
+    setNewQuestion({
+      question: "",
+      type: "multiple-choice",
+      options: ["", "", "", ""],
+      correctAnswer: 0,
+      image: "",
+      audio: "",
+      points: 10
+    });
+    
+    setEditingQuestion(null);
+    setShowAddQuestion(false);
+    toast.success("Question updated!");
+  };
+
+  const handleOptionChange = (index, value) => {
+    const newOptions = [...newQuestion.options];
+    newOptions[index] = value;
+    setNewQuestion({ ...newQuestion, options: newOptions });
+  };
+
+  const moveQuestion = (index, direction) => {
+    const newQuestions = [...quiz.questions];
+    const newIndex = index + direction;
+    
+    if (newIndex < 0 || newIndex >= newQuestions.length) return;
+    
+    [newQuestions[index], newQuestions[newIndex]] = [newQuestions[newIndex], newQuestions[index]];
+    setQuiz({ ...quiz, questions: newQuestions });
+    toast.success("Question order updated!");
+  };
+
+  const previewQuiz = () => {
+    toast.info("Opening quiz preview...");
+    // In a real app, this would navigate to a quiz preview page
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -149,11 +340,21 @@ export default function EpisodeDetailPage() {
             <p className="text-sm text-muted-foreground">{initialData.theme} • {initialData.age}</p>
           </div>
         </div>
-        <span className={`px-3 py-1.5 rounded-full text-xs font-medium ${
-          initialData.status === "Active" ? "bg-mint text-mint-foreground" : "bg-warm text-warm-foreground"
-        }`}>
-          {initialData.status}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className={`px-3 py-1.5 rounded-full text-xs font-medium ${
+            initialData.status === "Active" ? "bg-mint text-mint-foreground" : "bg-warm text-warm-foreground"
+          }`}>
+            {initialData.status}
+          </span>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={previewQuiz}
+            className="gap-1.5"
+          >
+            <Eye className="h-4 w-4" /> Preview
+          </Button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -163,6 +364,9 @@ export default function EpisodeDetailPage() {
           <TabsTrigger value="targets" className="rounded-lg">Targets</TabsTrigger>
           <TabsTrigger value="speechFocus" className="rounded-lg">Speech Focus</TabsTrigger>
           <TabsTrigger value="tasks" className="rounded-lg">Tasks</TabsTrigger>
+          <TabsTrigger value="quiz" className="rounded-lg gap-1.5">
+            <HelpCircle className="h-4 w-4" /> Quiz
+          </TabsTrigger>
         </TabsList>
 
         {/* Story Tab */}
@@ -413,6 +617,298 @@ export default function EpisodeDetailPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </TabsContent>
+
+        {/* Quiz Tab */}
+        <TabsContent value="quiz">
+          <div className="space-y-6">
+            {/* Quiz Settings Card */}
+            <Card className="border-border">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Quiz Settings</CardTitle>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">Enabled:</span>
+                      <Switch 
+                        checked={quiz.enabled} 
+                        onCheckedChange={toggleQuizEnabled}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">Pass Threshold:</span>
+                      <Input 
+                        type="number" 
+                        value={quiz.passThreshold} 
+                        onChange={(e) => updatePassThreshold(e.target.value)}
+                        className="w-20"
+                        min="0"
+                        max="100"
+                      />
+                      <span className="text-sm text-muted-foreground">%</span>
+                    </div>
+                    <Button 
+                      size="sm" 
+                      onClick={previewQuiz}
+                      variant="outline"
+                      className="gap-1.5"
+                    >
+                      <Eye className="h-4 w-4" /> Preview Quiz
+                    </Button>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Quiz appears after episode completion. Children must score {quiz.passThreshold}% to pass.
+                </p>
+              </CardHeader>
+            </Card>
+
+            {/* Questions List */}
+            <Card className="border-border">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Quiz Questions ({quiz.questions.length})</CardTitle>
+                  <Button 
+                    size="sm" 
+                    onClick={() => {
+                      setEditingQuestion(null);
+                      setShowAddQuestion(true);
+                    }}
+                    className="gap-1.5"
+                  >
+                    <Plus className="h-4 w-4" /> Add Question
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {quiz.questions.map((question, index) => (
+                    <div 
+                      key={question.id} 
+                      className="p-4 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-start gap-3">
+                          <div className="flex flex-col items-center gap-1">
+                            <button 
+                              onClick={() => moveQuestion(index, -1)}
+                              className="text-muted-foreground hover:text-foreground p-1"
+                              disabled={index === 0}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                              </svg>
+                            </button>
+                            <span className="text-xs font-bold text-muted-foreground min-w-6 text-center">Q{index + 1}</span>
+                            <button 
+                              onClick={() => moveQuestion(index, 1)}
+                              className="text-muted-foreground hover:text-foreground p-1"
+                              disabled={index === quiz.questions.length - 1}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className="font-medium text-foreground">{question.question}</h4>
+                              <Badge variant="outline" className="text-xs">
+                                {question.type === 'multiple-choice' && 'MCQ'}
+                                {question.type === 'image-selection' && 'Image'}
+                                {question.type === 'audio-response' && 'Audio'}
+                              </Badge>
+                              <Badge variant="secondary" className="text-xs">
+                                {question.points} pts
+                              </Badge>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                              {question.type === 'multiple-choice' && (
+                                <div className="space-y-1">
+                                  {question.options.map((option, optIndex) => (
+                                    <div key={optIndex} className="flex items-center gap-2">
+                                      <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-xs ${
+                                        optIndex === question.correctAnswer 
+                                          ? 'bg-green-100 text-green-800' 
+                                          : 'bg-gray-100 text-gray-600'
+                                      }`}>
+                                        {String.fromCharCode(65 + optIndex)}
+                                      </span>
+                                      <span>{option}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {question.type === 'image-selection' && (
+                                <div className="flex items-center gap-2">
+                                  <Image className="h-4 w-4" />
+                                  <span>Image selection task</span>
+                                </div>
+                              )}
+                              {question.type === 'audio-response' && (
+                                <div className="flex items-center gap-2">
+                                  <Volume2 className="h-4 w-4" />
+                                  <span>Audio response task</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            onClick={() => editQuestion(question)}
+                            className="h-8 px-2"
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            onClick={() => deleteQuestion(question.id)}
+                            className="h-8 px-2 text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Add/Edit Question Dialog */}
+            <Dialog open={showAddQuestion} onOpenChange={setShowAddQuestion}>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingQuestion ? "Edit Question" : "Add New Question"}
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Question</label>
+                    <Input 
+                      value={newQuestion.question}
+                      onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
+                      placeholder="Enter the question..."
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Question Type</label>
+                      <Select 
+                        value={newQuestion.type}
+                        onValueChange={(value) => setNewQuestion({ 
+                          ...newQuestion, 
+                          type: value,
+                          options: value === 'multiple-choice' ? ["", "", "", ""] : [],
+                          correctAnswer: value === 'multiple-choice' ? 0 : null
+                        })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="multiple-choice">Multiple Choice</SelectItem>
+                          <SelectItem value="image-selection">Image Selection</SelectItem>
+                          <SelectItem value="audio-response">Audio Response</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Points</label>
+                      <Input 
+                        type="number"
+                        value={newQuestion.points}
+                        onChange={(e) => setNewQuestion({ ...newQuestion, points: parseInt(e.target.value) || 10 })}
+                        placeholder="Points"
+                        min="1"
+                        max="100"
+                      />
+                    </div>
+                  </div>
+
+                  {newQuestion.type === 'multiple-choice' && (
+                    <div className="space-y-3">
+                      <label className="block text-sm font-medium">Options (Select correct answer)</label>
+                      {newQuestion.options.map((option, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <input
+                            type="radio"
+                            name="correctAnswer"
+                            checked={newQuestion.correctAnswer === index}
+                            onChange={() => setNewQuestion({ ...newQuestion, correctAnswer: index })}
+                            className="h-4 w-4"
+                          />
+                          <Input
+                            value={option}
+                            onChange={(e) => handleOptionChange(index, e.target.value)}
+                            placeholder={`Option ${String.fromCharCode(65 + index)}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {newQuestion.type === 'image-selection' && (
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Image URL (optional)</label>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          value={newQuestion.image}
+                          onChange={(e) => setNewQuestion({ ...newQuestion, image: e.target.value })}
+                          placeholder="Enter image URL or upload..."
+                        />
+                        <Button variant="outline" size="sm">
+                          <Image className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {newQuestion.type === 'audio-response' && (
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Audio File (optional)</label>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          value={newQuestion.audio}
+                          onChange={(e) => setNewQuestion({ ...newQuestion, audio: e.target.value })}
+                          placeholder="Enter audio file path or upload..."
+                        />
+                        <Button variant="outline" size="sm">
+                          <Volume2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => {
+                    setShowAddQuestion(false);
+                    setEditingQuestion(null);
+                    setNewQuestion({
+                      question: "",
+                      type: "multiple-choice",
+                      options: ["", "", "", ""],
+                      correctAnswer: 0,
+                      image: "",
+                      audio: "",
+                      points: 10
+                    });
+                  }}>
+                    Cancel
+                  </Button>
+                  <Button onClick={editingQuestion ? updateQuestion : addQuestion}>
+                    {editingQuestion ? "Update Question" : "Add Question"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </TabsContent>
       </Tabs>
