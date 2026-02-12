@@ -26,6 +26,7 @@ import NotFound from "./pages/NotFound";
 import CategoryPage from "./pages/CategoryPage";
 import ParentPage from "./pages/ParentPage";
 import ParentDetailPage from "./pages/ParentDetailPage";
+import SupportPage from "./pages/SupportPages";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,8 @@ const App = () => (
               <Route path="/reports" element={<ProtectedPage><ReportsPage /></ProtectedPage>} />
               <Route path="/content" element={<ProtectedPage><ContentPage /></ProtectedPage>} />
               <Route path="/settings" element={<ProtectedPage><SettingsPage /></ProtectedPage>} />
+              <Route path="/support" element={<ProtectedPage><SupportPage /></ProtectedPage>} />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

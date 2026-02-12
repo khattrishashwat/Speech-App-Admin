@@ -15,6 +15,7 @@ import {
   LogOut,
   Menu,
   X,
+  LifeBuoy,
   UserCog,
   FolderTree,
 } from "lucide-react";
@@ -31,6 +32,7 @@ const menuItems = [
   { key: "errorAnalysis", icon: BarChart3, path: "/error-analysis" },
   { key: "reports", icon: FileText, path: "/reports" },
   { key: "content", icon: FileEdit, path: "/content" },
+  { key: "support", icon: LifeBuoy, path: "/support" },
   { key: "settings", icon: Settings, path: "/settings" },
 ];
 

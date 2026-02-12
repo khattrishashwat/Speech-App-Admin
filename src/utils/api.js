@@ -57,17 +57,25 @@ export const updatePrivacyApi = (id, data) =>
 /* ================= FAQ ================= */
 
 export const getFaqsApi = () =>
-  httpClient.get("faq");
+  httpClient.get("faq/get-faqs");
 
 export const createFaqApi = (data) =>
-  httpClient.post("faq", data);
+  httpClient.post("faq/get-faqs", data);
 
 export const updateFaqApi = (id, data) =>
-  httpClient.put(`faq/${id}`, data);
+  httpClient.put(`faq/get-faqs/${id}`, data);
 
 export const deleteFaqApi = (id) =>
-  httpClient.delete(`faq/${id}`);
+  httpClient.delete(`faq/get-faqs/${id}`);
 
 /* ================= Image api ================= */
 export const ImageUrlApi = (data) =>
   httpClient.post("stories/upload-thumbnail", data);
+
+
+/* ================= Support ================= */
+export const getHelpApi = () =>
+  httpClient.get("support/help");
+
+export const getFeedbackApi = () =>
+  httpClient.get("support/feedback");
