@@ -60,6 +60,8 @@ const translations = {
     fair: "Fair",
     good: "Good",
     strong: "Strong",
+    category: "Category",
+  parent: "Parent",
   },
   fr: {
     login: "Connexion",
@@ -120,6 +122,8 @@ const translations = {
     fair: "Moyen",
     good: "Bon",
     strong: "Fort",
+    category: "Cat",
+  parent: "Par",
   },
 };
 

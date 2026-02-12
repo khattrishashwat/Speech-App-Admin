@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useI18n } from "@/contexts/I18nContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,14 +15,17 @@ import {
   LogOut,
   Menu,
   X,
-  BookOpenCheck,
+  UserCog,
+  FolderTree,
 } from "lucide-react";
 import { useState } from "react";
 
 const menuItems = [
   { key: "dashboard", icon: LayoutDashboard, path: "/" },
+  { key: "category", icon: FolderTree, path: "/category" },
   { key: "episodes", icon: BookOpen, path: "/episodes" },
   { key: "vocabulary", icon: MessageSquare, path: "/vocabulary" },
+  { key: "parent", icon: UserCog, path: "/parent" },
   { key: "children", icon: Users, path: "/children" },
   { key: "sessions", icon: Clock, path: "/sessions" },
   { key: "errorAnalysis", icon: BarChart3, path: "/error-analysis" },
@@ -46,7 +48,7 @@ export function AdminLayout({ children }) {
     <div className="min-h-screen flex w-full bg-background">
       {/* Sidebar */}
       <aside
-        className={`fixed lg:relative z-30 h-screen bg-card border-r border-border flex flex-col transition-all duration-300 ${
+        className={`fixed lg:relative z-30 bg-card border-r border-border flex flex-col transition-all duration-300 ${
           sidebarOpen ? "w-64" : "w-0 lg:w-16"
         } overflow-hidden`}
       >

@@ -23,6 +23,9 @@ import ReportsPage from "./pages/ReportsPage";
 import ContentPage from "./pages/ContentPage";
 import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
+import CategoryPage from "./pages/CategoryPage";
+import ParentPage from "./pages/ParentPage";
+import ParentDetailPage from "./pages/ParentDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -40,8 +43,11 @@ const App = () => (
               <Route path="/otp-verification" element={<OtpVerificationPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/" element={<ProtectedPage><Index /></ProtectedPage>} />
+              <Route path="/category" element={<ProtectedPage><CategoryPage /></ProtectedPage>} />
               <Route path="/episodes" element={<ProtectedPage><EpisodesPage /></ProtectedPage>} />
               <Route path="/episodes/:id" element={<ProtectedPage><EpisodeDetailPage /></ProtectedPage>} />
+               <Route path="/parent" element={<ProtectedPage><ParentPage /></ProtectedPage>} />
+              <Route path="/parent/:id" element={<ProtectedPage><ParentDetailPage /></ProtectedPage>} />
               <Route path="/vocabulary" element={<ProtectedPage><VocabularyPage /></ProtectedPage>} />
               <Route path="/children" element={<ProtectedPage><ChildrenPage /></ProtectedPage>} />
               <Route path="/children/:id" element={<ProtectedPage><ChildProfilePage /></ProtectedPage>} />

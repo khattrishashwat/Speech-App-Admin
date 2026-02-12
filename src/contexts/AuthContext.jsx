@@ -4,22 +4,18 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return sessionStorage.getItem("admin_auth") === "true";
+    return !!localStorage.getItem("token");
   });
 
-  const login = (email, password) => {
-    // Demo auth - in production connect to backend
-    if (email && password) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("admin_auth", "true");
-      return true;
-    }
-    return false;
+  const login = (token, userData) => {
+    localStorage.setItem("token", token);
+    setIsAuthenticated(true);
+    return true;
   };
 
   const logout = () => {
+    localStorage.clear();
     setIsAuthenticated(false);
-    sessionStorage.removeItem("admin_auth");
   };
 
   return (
