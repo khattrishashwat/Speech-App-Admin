@@ -14,6 +14,7 @@ import {
   Settings,
   LogOut,
   Menu,
+  Star,
   X,
   LifeBuoy,
   UserCog,
@@ -24,6 +25,8 @@ import { useState } from "react";
 const menuItems = [
   { key: "dashboard", icon: LayoutDashboard, path: "/" },
   { key: "category", icon: FolderTree, path: "/category" },
+    { key: "filter", icon: Star, path: "/intreast" },
+
   { key: "episodes", icon: BookOpen, path: "/episodes" },
   { key: "vocabulary", icon: MessageSquare, path: "/vocabulary" },
   { key: "parent", icon: UserCog, path: "/parent" },
